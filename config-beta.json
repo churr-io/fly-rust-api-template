@@ -1,0 +1,13 @@
+{
+  "domain": "beta",
+  "http": {
+    "address": "[::0]",
+    "rate_limit": {
+      "max_burst_limit": 100
+    },
+    "timeout": "10m"
+  },
+  "proxy_proto_enabled": true,
+  "conn_read_timeout": "10m",
+  "conn_write_timeout": "10m"
+}

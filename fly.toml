@@ -1,0 +1,46 @@
+# fly.toml app configuration file generated for cookbook-api-beta on 2024-02-25T11:34:48-08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = '__APP_NAME__'
+primary_region = 'sea'
+
+[build]
+
+[[services]]
+protocol = 'tcp'
+internal_port = 8080
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+
+[[services.ports]]
+handlers = ["http"]
+port = 80
+force_https = true
+
+[[services.ports]]
+# Terminate tls only, allows app to directly handle http/2, use proxy_proto to get source ip
+handlers = ["tls", "proxy_proto"]
+port = 443
+tls_options = { "alpn" = ["h2", "http/1.1"] }
+
+[services.ports.http_options]
+h2_backend = true
+
+[[services.http_checks]]
+interval = "10s"
+grace_period = "1s"
+method = "get"
+path = "/health"
+protocol = "http"
+timeout = "2s"
+
+[[services.tcp_checks]]
+grace_period = "2s"
+timeout = "1s"
+interval = "1s"
+
+[[vm]]
+size = 'shared-cpu-1x'
